@@ -16,3 +16,9 @@
 - [x] Update and verify the GitHub description and topics.
 - [x] Validate links and review the complete diff against the default branch.
 - [x] Commit, push and open the PR.
+
+## Source audit and correction
+
+- [x] Inspect component mappings, connectivity, library setup and existing documentation against the source.
+- [x] Correct reproducible project setup errors and document unresolved circuit work in `docs/code-audit-report.md`.
+- [ ] Validate the final diff and supported CAD operations, update the existing PR, then merge the verified head.

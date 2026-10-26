@@ -10,9 +10,9 @@ A work-in-progress current measurement circuit by Michael Cutler, started in Nov
 - [Schematic source](CurrentSensor.sch) — editable legacy Eeschema format.
 - [KiCad project](CurrentSensor.pro) — legacy project settings.
 
-The PDF identifies KiCad **5.1.7**. Open `CurrentSensor.pro` with the legacy KiCad toolchain, or import a copy into a newer KiCad release and review conversion results before saving. Modern KiCad compatibility and electrical rule checks have not been verified.
+The PDF identifies KiCad **5.1.7**. Open `CurrentSensor.pro` with the legacy KiCad toolchain, or import a copy into a newer KiCad release and review conversion results before saving. The source audit below checks loading and ERC with a modern nightly; no format migration or passing electrical validation is claimed.
 
-The schematic references `Makeristic-KiCad-Library:STM32F042K6T6`. Clone the [Makeristic KiCad Library](https://github.com/makeristic/Makeristic-KiCad-Library), register its legacy symbol library in KiCad, and install the standard KiCad libraries. No symbol cache or project-local library tables are included here; unresolved library references need to be resolved before editing or exporting.
+The restored [symbol cache](CurrentSensor-cache.lib) contains the 20 symbol definitions used by the legacy schematic, allowing it to load without silently substituting different symbol geometry. The [project symbol table](sym-lib-table) resolves `Makeristic-KiCad-Library:STM32F042K6T6` from a sibling clone of the [Makeristic KiCad Library](https://github.com/makeristic/Makeristic-KiCad-Library). Install the standard KiCad libraries as well. See [cached symbol provenance](THIRD_PARTY_NOTICES.md) for source versions and reuse terms.
 
 ```sh
 gh repo clone makeristic/CurrentSensor
@@ -28,7 +28,13 @@ gh repo clone makeristic/Makeristic-KiCad-Library
 - Candidate sense resistors of 10 kΩ, 10 Ω and 0.01 Ω, labelled for nA, µA and mA measurement respectively.
 - A four-pin connector labelled STEMMA QT and I²C pull-ups.
 
-These are design intentions visible in the schematic, not validated measurement ranges or interface capabilities. Range switching, the measurement connection to the controller, firmware, PCB layout and calibration remain unfinished. Review those before attempting a build.
+These are design intentions visible in the schematic, not validated measurement ranges or interface capabilities. Range switching, the measurement connection to the controller, firmware, PCB layout and calibration remain unfinished. Both MAX4239 shutdown inputs are unconnected, and the second amplifier's positive supply is not wired. Review and complete the circuit before attempting a build.
+
+## Source audit
+
+The [source audit report](docs/code-audit-report.md) records the October 2026 inspection and exact limitations. KiCad nightly 10.99.0 loads the legacy source with the restored cache and runs ERC. The isolated check reports **13 errors and 97 warnings**; it is not an electrical validation pass. Most warnings concern library/footprint configuration, while the unconnected amplifier pins and incomplete sense path are actual circuit work.
+
+Component references are still unannotated. Do not use a netlist exported from this state as manufacturing input: duplicate references prevent a complete component list. No circuit wiring or historical PDF has been changed by this audit.
 
 ## Related projects and contributions
 
@@ -38,4 +44,4 @@ Use [issues](https://github.com/makeristic/CurrentSensor/issues) for circuit que
 
 ## Licence
 
-Michael Cutler's original circuit design and documentation are available under the [MIT licence](LICENSE). Referenced KiCad libraries and linked manufacturers' datasheets retain their own terms; this licence does not relicense those third-party materials.
+Michael Cutler's original circuit design and documentation are available under the [MIT licence](LICENSE). Cached/reference library definitions and linked manufacturers' datasheets retain their own terms; this licence does not relicense those third-party materials. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [LICENSE-KiCad.md](LICENSE-KiCad.md).
