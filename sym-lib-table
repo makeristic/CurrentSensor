@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "Makeristic-KiCad-Library")(type "Legacy")(uri "${KIPRJMOD}/../Makeristic-KiCad-Library/Makeristic-KiCad-Library.lib")(options "")(descr "Makeristic legacy symbols; clone the sibling repository before editing"))
+)
